@@ -1,8 +1,17 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import { fetchCountriesWithFlags } from '../api/api';
 
-// Exportamos el Context para que el hook useGame lo importe
 export const GameContext = createContext();
+
+export const useGame = () => {
+  const context = useContext(GameContext);
+
+  if (!context) {
+    throw new Error('useGame debe ser utilizado dentro de un GameProvider');
+  }
+
+  return context;
+};
 
 const normalizeText = (text = '') =>
   text

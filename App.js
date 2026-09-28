@@ -1,11 +1,24 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { Flag } from './src/components/Flag';
 import { GuessForm } from './src/components/GuessForm';
 import { ScoreBoard } from './src/components/ScoreBoard';
 import { Timer } from './src/components/Timer';
 import { GameProvider } from './src/components/GameContext';
-import { useGame } from './src/hook/useGame';
+import { COLORS } from './src/constants/colors';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+});
 
 export default function App() {
   return (
@@ -21,17 +34,3 @@ export default function App() {
     </GameProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-});
-

@@ -1,6 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useGame } from './GameContext';
+import { COLORS } from '../constants/colors';
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  timerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.primary,
+  },
+  warningText: {
+    color: COLORS.danger,
+  },
+});
 
 export const Timer = () => {
   const { timer } = useGame();
@@ -14,17 +30,3 @@ export const Timer = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: 5,
-    alignItems: 'center',
-  },
-  timerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#28a745',
-  },
-  warningText: {
-    color: '#dc3545',
-  },
-});

@@ -1,6 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useGame } from './GameContext';
+import { COLORS } from '../constants/colors';
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    marginVertical: 10,
+    width: '100%',
+  },
+  scoreText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: COLORS.primary,
+  },
+  messageText: {
+    fontSize: 16,
+    marginTop: 6,
+    fontWeight: '600',
+    color: COLORS.accent,
+  },
+});
 
 export const ScoreBoard = () => {
   const { score, message } = useGame();
@@ -12,21 +32,3 @@ export const ScoreBoard = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  scoreText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  messageText: {
-    fontSize: 16,
-    marginTop: 5,
-    fontWeight: '600',
-    color: '#007AFF',
-  },
-});
