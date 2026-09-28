@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
-import { GameProvider } from './src/components/GameContext';
 import { Flag } from './src/components/Flag';
 import { GuessForm } from './src/components/GuessForm';
 import { ScoreBoard } from './src/components/ScoreBoard';
 import { Timer } from './src/components/Timer';
+import { GameProvider } from './src/components/GameContext';
+import { useGame } from './src/hook/useGame';
 
 export default function App() {
   return (
@@ -33,3 +34,4 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
+

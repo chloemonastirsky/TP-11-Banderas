@@ -22,6 +22,26 @@ export const GameProvider = ({ children }) => {
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const [timer, setTimer] = useState(15);
+  const [leaderboard, setLeaderboard] = useState([]);
+
+  const selectRandomCountry = (excludeName = '') => {
+    if (!countries.length) return;
+
+    let nextCountry = pickRandomCountry(countries);
+
+    while (
+      nextCountry &&
+      excludeName &&
+      normalizeText(nextCountry.name) === normalizeText(excludeName)
+    ) {
+      nextCountry = pickRandomCountry(countries);
+    }
+
+    setCurrentCountry(nextCountry);
+    setTimer(15);
+    setMessage('');
+  };
 
   useEffect(() => {
     const loadCountries = async () => {
@@ -32,6 +52,7 @@ export const GameProvider = ({ children }) => {
         if (data && data.length > 0) {
           setCountries(data);
           setCurrentCountry(pickRandomCountry(data));
+          setTimer(15);
         }
       } catch (error) {
         console.error('Error al obtener los países:', error);
@@ -44,10 +65,23 @@ export const GameProvider = ({ children }) => {
     loadCountries();
   }, []);
 
-  const selectRandomCountry = () => {
-    if (countries.length === 0) return;
-    setCurrentCountry(pickRandomCountry(countries));
-  };
+  useEffect(() => {
+    if (!currentCountry) return;
+
+    const interval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 1) {
+          setScore((oldScore) => Math.max(0, oldScore - 1));
+          setMessage('¡Se acabó el tiempo! -1 punto');
+          selectRandomCountry(currentCountry.name);
+          return 15;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [currentCountry, countries]);
 
   const submitGuess = (userGuess) => {
     if (!currentCountry || !userGuess?.trim()) return;
@@ -58,10 +92,11 @@ export const GameProvider = ({ children }) => {
     if (normalizedGuess === normalizedCountry) {
       setScore((prevScore) => prevScore + 10);
       setMessage('¡Correcto! +10 puntos');
-      selectRandomCountry();
+      selectRandomCountry(currentCountry.name);
     } else {
       setScore((prevScore) => Math.max(0, prevScore - 1));
       setMessage('¡Incorrecto! -1 punto');
+      selectRandomCountry(currentCountry.name);
     }
   };
 
@@ -79,6 +114,8 @@ export const GameProvider = ({ children }) => {
         score,
         loading,
         message,
+        timer,
+        leaderboard,
         submitGuess,
         resetGame,
         selectRandomCountry,
