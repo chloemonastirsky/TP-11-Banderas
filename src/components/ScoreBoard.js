@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { useGame } from './GameContext';
 import { COLORS } from '../constants/colors';
 
@@ -23,12 +23,14 @@ const styles = StyleSheet.create({
 });
 
 export const ScoreBoard = () => {
-  const { score, message } = useGame();
+  const { score, message, playerName, isPlaying, endGame } = useGame();
 
   return (
     <View style={styles.container}>
+      {playerName ? <Text style={{ fontSize: 16 }}>Jugador: {playerName}</Text> : null}
       <Text style={styles.scoreText}>Puntaje: {score}</Text>
       {message ? <Text style={styles.messageText}>{message}</Text> : null}
+      {isPlaying ? <Button title="Terminar" onPress={endGame} /> : null}
     </View>
   );
 };

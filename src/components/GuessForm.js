@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
 export const GuessForm = () => {
   const [inputGuess, setInputGuess] = useState('');
   const { submitGuess } = useGame();
+  
 
   const handleGuess = () => {
     submitGuess(inputGuess);
