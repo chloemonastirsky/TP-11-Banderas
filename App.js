@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, Text, Button } from 'react-native';
 import { Flag } from './src/components/Flag';
 import { GuessForm } from './src/components/GuessForm';
 import { ScoreBoard } from './src/components/ScoreBoard';
 import { Timer } from './src/components/Timer';
 import { GameProvider, useGame } from './src/components/GameContext';
 import PlayerForm from './src/components/PlayerForm';
+import CapitalOptions from './src/components/CapitalOptions';
+import Hint from './src/components/Hint';
 import { Leaderboard } from './src/components/Leaderboard';
 import { COLORS } from './src/constants/colors';
 
@@ -27,31 +29,33 @@ export default function App() {
     <GameProvider>
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <Main />
+          <Game />
         </ScrollView>
       </SafeAreaView>
     </GameProvider>
   );
 }
 
-function Main() {
-  const { isPlaying } = useGame();
-
-  if (!isPlaying) {
-    return (
-      <>
-        <PlayerForm />
-        <Leaderboard />
-      </>
-    );
-  }
+function Game() {
+  const { isPlaying, playerName, mode, message, endGame } = useGame();
 
   return (
     <>
-      <ScoreBoard />
-      <Timer />
-      <Flag />
-      <GuessForm />
+      {isPlaying ? (
+        <>
+          <Text style={{ color: COLORS.textPrimary }}>Jugador: {playerName}</Text>
+          <ScoreBoard />
+          <Timer />
+          <Flag />
+          {mode === 'flags' ? <GuessForm /> : <CapitalOptions />}
+          <Hint />
+          {!!message && <Text style={{ color: COLORS.textPrimary }}>{message}</Text>}
+          <Button title="Terminar partida" onPress={endGame} />
+        </>
+      ) : (
+        <PlayerForm />
+      )}
+      <Leaderboard />
     </>
   );
 }
